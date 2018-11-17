@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>consignmentmanifestdupes</Title>
+      <Shortcut>consignmentmanifestdupes</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE UAT_iDepot;
+GO
+
+SELECT 		* 
+FROM		StockServices.ConsignmentManifest AS cm
+INNER JOIN  (
+SELECT 		tgt.ConsignmentID, Tgt.AbsStockNo, tgt.SubCatNo 
+FROM		 [StockServices].[ConsignmentManifest] AS Tgt 
+INNER JOIN  [StockServices].[Staging_ConsignmentManifest] AS src
+ON Tgt.ConsignmentID = Src.ConsignmentID
+AND Tgt.AbsStockNo = Src.AbsStockNo
+--AND Tgt.orderidx = Src.orderidx
+AND tgt.SubCatNo = Src.SubCatNo
+GROUP BY  Tgt.ConsignmentID, Tgt.AbsStockNo, tgt.SubCatNo 
+HAVING COUNT(*) > 1 
+) b ON b.AbsStockNo = cm.AbsStockNo AND b.ConsignmentID = cm.ConsignmentID AND b.SubCatNo = cm.SubCatNo]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

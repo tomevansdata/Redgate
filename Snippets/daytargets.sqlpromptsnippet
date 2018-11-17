@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>daytargets</Title>
+      <Shortcut>daytargets</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[="INSERT INTO DayTargets (SalesDay,Pos,AnnTarget,Contrib,DayTarget,Footfall,Volume) VALUES ('"&TEXT(A2, "yyyy-mm-dd")&"','"&UPPER(B2)&"',"&C2&","&D2&","&E2&","&F2&","&G2&");"]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

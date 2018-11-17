@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>resetbatchcreation</Title>
+      <Shortcut>resetbatchcreation</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[UPDATE		bc
+SET			bc.HeaderID = NULL
+--SELECT		*
+FROM		dbo.NPS AS n
+INNER JOIN	dbo.BatchCreation AS bc		ON  bc.NPSID = n.NPSID
+INNER JOIN	dbo.NPSStatusType AS nst	ON  nst.NPSStatusTypeID = n.NPSStatusTypeID
+INNER JOIN	dbo.BatchDetailSMS AS bds	ON  bds.NPSID = n.NPSID
+WHERE		nst.NPSStatusClassID = 3
+AND			bds.TinyURL = 'Error';
+
+
+UPDATE		n
+SET			NPSStatusTypeID = 1
+--SELECT		*
+FROM		dbo.NPS AS n
+INNER JOIN	dbo.BatchCreation AS bc		ON  bc.NPSID = n.NPSID
+INNER JOIN	dbo.NPSStatusType AS nst	ON  nst.NPSStatusTypeID = n.NPSStatusTypeID
+INNER JOIN	dbo.BatchDetailSMS AS bds	ON  bds.NPSID = n.NPSID
+WHERE		nst.NPSStatusClassID = 3
+AND			bds.TinyURL = 'Error';]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

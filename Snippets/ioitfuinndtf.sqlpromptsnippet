@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ioitfuinndtf</Title>
+      <Shortcut>ioitfuinndtf</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>table</ID>
+          <ToolTip />
+          <Default>#t</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[IF OBJECT_ID('tempdb..$table$', 'u') IS NOT NULL 
+DROP TABLE $table$ 
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

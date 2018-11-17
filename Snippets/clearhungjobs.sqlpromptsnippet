@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>clearhungjobs</Title>
+      <Shortcut>clearhungjobs</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[UPDATE		BIDW.dbo.CONFIG_JOB_PACKAGE
+SET			JP_END_DTTM = GETDATE(),
+			JP_STATUS = 'FAILED'
+WHERE		JP_PACKAGEID = '3514A7B4-9CFD-4181-9E19-74647D95757C'
+AND			JP_END_DTTM IS NULL 
+AND			JP_STATUS = 'RUNNING'
+
+UPDATE		BIDW.dbo.CONFIG_JOB_CONTROL
+SET			JOB_END_DTTM = GETDATE(),
+			JOB_STATUS = 'FAILED'
+WHERE		JOB_ID = '3B292AFE-28A9-4861-9399-9FCF6B33CC22']]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

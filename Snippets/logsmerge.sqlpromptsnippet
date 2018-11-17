@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>logsmerge</Title>
+      <Shortcut>logsmerge</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[CREATE TABLE Logs.TrelloCardLabelsMerge
+		(	LogID					INT IDENTITY (1,1)	NOT NULL CONSTRAINT PK_CardLabelsMerge PRIMARY KEY CLUSTERED,
+			MergeAction				CHAR(6)				NOT NULL,
+			LogTime					DATETIME2			NOT NULL CONSTRAINT DF_CardLabelsMerge_LogTime DEFAULT SYSDATETIME(),
+			LogUser					SYSNAME				NOT NULL CONSTRAINT DF_CardLabelsMerge_LogUser DEFAULT ORIGINAL_LOGIN(),	
+			RuntimeID				UNIQUEIDENTIFIER	NOT NULL,
+			InsShortCardID			INT					NULL,
+			InsLabelID				VARCHAR(100)		NULL,
+			DelShortCardID			INT					NULL,
+			DelLabelID				VARCHAR(100)		NULL
+		);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>generatetests</Title>
+      <Shortcut>generatetests</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE ;
+GO
+
+CREATE TYPE tSQLt.uttTests AS TABLE
+		(	ID			INT IDENTITY(1,1)	NOT NULL, 
+			TestName	VARCHAR(255)		NOT NULL, 
+			TestScript	VARCHAR(MAX)		NULL 
+		);
+GO
+
+IF OBJECT_ID('tSQLt.GenerateTestScripts', 'p') IS NOT NULL 
+DROP PROCEDURE tSQLt.GenerateTestScripts;
+GO
+
+CREATE PROCEDURE tSQLt.GenerateTestScripts
+			(	@ClassName		VARCHAR(255),
+				@CreateClass	BIT,
+				@Tests			tSQLt.uttTests	READONLY,
+				@SQL			VARCHAR (MAX)	OUTPUT
+			)
+AS
+BEGIN 
+
+SET NOCOUNT ON; 
+
+BEGIN TRY 
+
+	DECLARE		@i				TINYINT = (SELECT MAX(ID) FROM @Tests),
+				@Database		VARCHAR (255) = DB_NAME(),
+				@ErrorMessage	NVARCHAR(2048),
+				@ErrorSeverity	TINYINT,
+				@ErrorState		TINYINT,
+				@ErrorNumber	INT,
+				@ErrorProcedure	SYSNAME,
+				@ErrorLine		INT;
+
+	SET			@SQL = 
+
+	'USE ' + @Database + ';
+	GO
+
+	';
+
+	IF @CreateClass = 1
+	BEGIN
+
+	SET			@SQL += 
+	'
+	EXECUTE		tSQLt.DropClass @ClassName = ''' + @ClassName + '''; 
+	GO
+	EXECUTE		tSQlt.NewTestClass @ClassName = ''' + @ClassName + '''; 
+	GO
+
+	';
+	END;
+
+	WHILE @i <> 0
+	BEGIN
+
+		SELECT		@SQL += 
+		'
+		IF OBJECT_ID(''[' + @ClassName + '].[test ' + TestName + ']'', ''p'') IS NOT NULL 
+		DROP PROCEDURE [' + @ClassName + '].[test ' + TestName + '];
+		GO
+
+		CREATE PROCEDURE [' + @ClassName + '].[test ' + TestName + ']
+		AS 
+		BEGIN
+
+		'
+		+ COALESCE(TestScript, 
+		'
+		/*==============================================================================
+
+		==============================================================================*/
+
+		EXECUTE		tSQLt.FakeTable @TableName = N'''';
+		EXECUTE		tsqlt.SpyProcedure @ProcedureName = N'''';
+		')
+		+ 
+		'
+		END
+		GO
+		'
+		FROM		@Tests 
+		WHERE		ID = @i;
+
+		SELECT		@i = @i - 1;
+
+	END;
+
+	SELECT		@SQL += 
+	'
+	EXECUTE		tSQLt.Run ''[' + @ClassName + ']'';
+	GO
+	';
+
+END TRY 
+      
+BEGIN CATCH
+
+    SELECT	@ErrorMessage = ERROR_MESSAGE(), 
+			@ErrorSeverity = ERROR_SEVERITY(), 
+			@ErrorState = ERROR_STATE(), 
+			@ErrorNumber = ERROR_NUMBER(), 
+			@ErrorProcedure = ERROR_PROCEDURE(), 
+			@ErrorLine = ERROR_LINE();
+       
+    IF @ErrorMessage NOT LIKE '***%'
+		SELECT @ErrorMessage = '*** ' + COALESCE(QUOTENAME(@ErrorProcedure), '<dynamic SQL>') 
+										+', Error Line ' + LTRIM(STR(@ErrorLine)) 
+										+ ', Error Number '
+										+ LTRIM(STR(@ErrorNumber)) + ': '
+										+ @ErrorMessage;
+
+	RAISERROR	(@ErrorMessage, @ErrorSeverity, @ErrorState);
+	    
+END CATCH;
+END
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

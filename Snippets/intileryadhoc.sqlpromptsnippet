@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>intileryadhoc</Title>
+      <Shortcut>intileryadhoc</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE PackageScheduler;
+GO
+
+INSERT INTO Config.PackageAdhoc (PackageID,ExtractBeginDateTime,ExtractEndDateTime,AdhocRunTime)
+VALUES  (25, '20161025', '20161026', SYSDATETIME()),
+		(23, '20161025', '20161026', DATEADD(MINUTE, 10, SYSDATETIME())),
+		(24, '20161025', '20161026', DATEADD(MINUTE, 12, SYSDATETIME())),
+		(40, '20161025', '20161026', DATEADD(MINUTE, 14, SYSDATETIME()))
+		]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

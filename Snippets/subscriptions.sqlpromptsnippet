@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>subscriptions</Title>
+      <Shortcut>subscriptions</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE ReportServer;
+GO
+
+WITH	SubscriptionXML AS 
+	(	SELECT		CONVERT(XML, ExtensionSettings) AS ExtensionSettingsXML
+		FROM		dbo.Subscriptions
+	),
+
+		SettingsCTE AS 
+	(	SELECT		COALESCE(Settings.value('(./*:Name/text())[1]', 'NVARCHAR(1024)'),'Value')	AS SettingName,
+					Settings.value('(./*:Value/text())[1]', 'NVARCHAR(MAX)')					AS SettingValue
+		FROM		SubscriptionXML	AS s
+		CROSS APPLY s.ExtensionSettingsXML.nodes('//*:ParameterValue') AS x (Settings)
+	)
+
+--SELECT		STUFF((	
+					SELECT		DISTINCT /*',' +*/ LTRIM(RTRIM(f.Split))
+					FROM		SettingsCTE									AS s
+					CROSS APPLY DBA.dbo.fnSplitString(SettingValue, ';')	AS f
+					WHERE		s.SettingName IN ('TO', 'CC', 'BCC')
+					AND			f.Split LIKE '%@sofaworks%'
+					--FOR XML PATH(''))
+		--	, 1, 1, '');]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

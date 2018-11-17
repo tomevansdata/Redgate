@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>packageinsert</Title>
+      <Shortcut>packageinsert</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE PackageScheduler;
+GO
+
+INSERT INTO Config.Package (PackageFolder,PackageProject,PackageName,Is32bit,IsLongRunning)
+VALUES		('', '', '', , ,);
+
+SELECT 		* 
+FROM		Config.Package;
+
+SELECT 		* 
+FROM		Config.PackageSchedule;
+
+INSERT INTO Config.PackageSchedule (PackageID,[Description],WindowDayBit,WindowStartTime,WindowEndTime,FrequencyMinutes,IsEnabled)
+VALUES		(, '', 127, ':', ':', , 1);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

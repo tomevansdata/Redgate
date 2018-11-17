@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>proc</Title>
+      <Shortcut>proc</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[IF OBJECT_ID('') IS NOT NULL
+DROP PROCEDURE ;
+GO
+
+CREATE PROCEDURE 
+AS
+BEGIN
+
+SET NOCOUNT ON; 
+
+BEGIN TRY 
+	
+	DECLARE		@Date				DATETIME2 = SYSDATETIME(),
+				@ErrorMessage		NVARCHAR(2048),
+				@ErrorSeverity		TINYINT,
+				@ErrorState			TINYINT,
+				@ErrorNumber		INT,
+				@ErrorProcedure		SYSNAME,
+				@ErrorLine			INT,
+				@TranCount			INT = @@TRANCOUNT,
+				@MsgLog				Logs.uttMsgLog, 
+				@Proc				VARCHAR(255) = OBJECT_NAME(@@PROCID);
+
+    IF @@TRANCOUNT = 0 
+		BEGIN TRANSACTION;  
+
+    INSERT INTO @MsgLog (CurrentProc, CurrentStatus)
+	VALUES		(@Proc, 'Procedure Start');    
+
+	
+	
+	INSERT INTO @MsgLog (CurrentProc, CurrentStatus, CurrentColumn, CurrentValue)
+	VALUES		(@Proc, '', 'RowCount', @@ROWCOUNT);
+
+	INSERT INTO @MsgLog (CurrentProc, CurrentStatus)
+	VALUES		(@Proc, 'Procedure End');               
+       
+    EXECUTE		Logs.MsgLogInsert @MsgLog = @MsgLog;
+
+	IF @TranCount = 0 AND @@TRANCOUNT > 0 
+	COMMIT TRANSACTION;  
+		     
+END TRY 
+      
+BEGIN CATCH
+
+    IF @TranCount = 0 AND @@TRANCOUNT > 0 
+		ROLLBACK TRANSACTION;
+
+    SELECT		@ErrorMessage = ERROR_MESSAGE(), 
+				@ErrorSeverity = ERROR_SEVERITY(), 
+				@ErrorState = ERROR_STATE(), 
+				@ErrorNumber = ERROR_NUMBER(), 
+				@ErrorProcedure = ERROR_PROCEDURE(), 
+				@ErrorLine = ERROR_LINE();
+       
+    IF @ErrorMessage NOT LIKE '***%'
+		SELECT		@ErrorMessage = '*** ' + COALESCE(QUOTENAME(@ErrorProcedure), '<dynamic SQL>') 
+									+', Error Line ' + LTRIM(STR(@ErrorLine)) 
+									+ ', Error Number '
+									+ LTRIM(STR(@ErrorNumber)) + ': '
+									+ @ErrorMessage;
+
+    INSERT INTO @MsgLog (CurrentProc, CurrentStatus)
+	SELECT		@Proc, @ErrorMessage;   
+                        
+    EXECUTE		Logs.MsgLogInsert @MsgLog = @MsgLog;
+      
+	RAISERROR	(@ErrorMessage, @ErrorSeverity, @ErrorState);
+	    
+END CATCH;
+
+END;
+GO
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

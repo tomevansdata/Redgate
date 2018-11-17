@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>test</Title>
+      <Shortcut>test</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[USE tSQLt;
+GO
+DECLARE		@Tests			tSQLt.uttTests;
+DECLARE		@ClassName		VARCHAR (255)	= '',
+			@SQL			VARCHAR (MAX)
+
+INSERT INTO @Tests (TestName)
+VALUES		('001_'), 
+			('002_'),	
+			('003_');			
+
+EXECUTE		tSQLt.GenerateTestScripts	@ClassName = @ClassName,
+										@Tests = @Tests,
+										@SQL = @SQL OUTPUT;
+
+SELECT		@SQL;
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

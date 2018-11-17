@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>exass</Title>
+      <Shortcut>exass</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[EXECUTE		tSQLt.AssertEqualsTable @Expected = N'dbo.Expected', 
+									@Actual = N'dbo.Actual';]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

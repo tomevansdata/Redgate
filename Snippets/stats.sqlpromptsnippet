@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>stats</Title>
+      <Shortcut>stats</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+
+SET STATISTICS IO OFF;
+SET STATISTICS TIME OFF;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

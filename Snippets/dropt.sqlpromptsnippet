@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>dropt</Title>
+      <Shortcut>dropt</Shortcut>
+      <Description />
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[IF OBJECT_ID('tempdb..#t', 'u') IS NOT NULL 
+	DROP TABLE #t
+	]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
