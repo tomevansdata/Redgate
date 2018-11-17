@@ -1,0 +1,2 @@
+# Redgate
+Redgate settings
